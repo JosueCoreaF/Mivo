@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "841323111675",
+    "project_id": "mivo-97689",
+    "storage_bucket": "mivo-97689.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841323111675:android:b18393ec6b17e4eb603c5e",
+        "android_client_info": {
+          "package_name": "com.mivo.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfvug-uj0YSS2lOo_t9SnCoMcNRaAumAo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
