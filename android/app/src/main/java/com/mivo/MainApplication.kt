@@ -19,10 +19,7 @@ class MainApplication : Application(), ReactApplication {
 			object : DefaultReactNativeHost(this) {
 				override fun getPackages(): List<ReactPackage> =
 						PackageList(this).packages.apply {
-							// Packages that cannot be autolinked yet can be added manually here, for example:
-							// add(MyReactNativePackage())
-              
-							// https://viro-community.readme.io/docs/installation-instructions#5-now-add-the-viro-package-to-your-mainapplication
+							// Packages that cannot be autolinked yet can be added manually aquí
 							add(ReactViroPackage(ReactViroPackage.ViroPlatform.GVR))
 							add(ReactViroPackage(ReactViroPackage.ViroPlatform.AR))
 						}

@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { i18n, useLanguage } from "../contexts/LanguageContext";
 import CustomButton from "../components/CustomButton";
 import { translations } from "../translations/i18n";
-import { TouchableOpacity } from "react-native-gesture-handler";
+
 
 type Book = {
     id: string;
@@ -52,6 +52,7 @@ export default function Home() {
 
     const renderItem = ({ item }: { item: Book }) =>
     (<TouchableOpacity style={styles.card}>
+// ...existing code...
         <Image source={{ uri: item.image_url }} style={styles.image} />
         <View style={styles.info}>
             <Text style={styles.title}>{item.title}</Text>
@@ -98,16 +99,17 @@ const styles = StyleSheet.create({
     list: {
         paddingHorizontal: 16
     },
-    card: {flexDirection:'row',
+    card: {
+        flexDirection: 'row',
         borderRadius: 8,
         marginVertical: 8,
         padding: 10,
         backgroundColor: 'pink'
 
     },
-    info: {flexShrink: 1},
-    title: {fontWeight:'bold', fontSize: 16},
-    author: {color:'dark-grey'},
+    info: { flexShrink: 1 },
+    title: { fontWeight: 'bold', fontSize: 16 },
+    author: { color: 'dark-grey' },
     image: {
         width: 80,
         height: 120,
