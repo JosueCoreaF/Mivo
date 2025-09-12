@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react"
-import auth from '@react-native-firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from '@react-native-firebase/auth';
 
 type User = {
     email: string,
@@ -20,7 +20,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const login = async (email: string, password: string) => {
         try {
-            const userCredential = await auth().signInWithEmailAndPassword(email, password);
+            const auth = getAuth();
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
             setUser({ email: userCredential.user.email ?? '' });
             setIsAllowed(true);
         } catch (error: any) {
@@ -30,7 +31,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
     const register = async (email: string, password: string) => {
         try {
-            const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+            const auth = getAuth();
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             setUser({ email: userCredential.user.email ?? '' });
             setIsAllowed(true);
         } catch (error: any) {
@@ -38,7 +40,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             throw error;
         }
     }
-    const logout = () => {
+    const logout = async () => {
+        const auth = getAuth();
+        await signOut(auth);
         setUser(null);
         setIsAllowed(false);
     }

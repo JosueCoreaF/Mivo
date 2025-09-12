@@ -1,3 +1,8 @@
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
+import { LanguageProvider } from "./src/contexts/LanguageContext";
+import Login from "./src/screens/Login";
 import {
   ViroARScene,
   ViroARSceneNavigator,
@@ -5,21 +10,14 @@ import {
   ViroTrackingReason,
   ViroTrackingStateConstants,
 } from "@reactvision/react-viro";
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
 
 const HelloWorldSceneAR = () => {
-  const [text, setText] = useState("Initializing AR...");
-
+  const [text, setText] = React.useState("Initializing AR...");
   function onInitialized(state: any, reason: ViroTrackingReason) {
-    console.log("onInitialized", state, reason);
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      setText("hola!");
-    } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
-      // Handle loss of tracking
+      setText("¡Hola!");
     }
   }
-
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
       <ViroText
@@ -32,19 +30,33 @@ const HelloWorldSceneAR = () => {
   );
 };
 
-export default () => {
-  return (
+function Main() {
+  const { user } = useAuth();
+  // Si hay usuario autenticado, mostrar AR, si no, Login
+  return user ? (
     <ViroARSceneNavigator
       autofocus={true}
-      initialScene={{
-        scene: HelloWorldSceneAR,
-      }}
+      initialScene={{ scene: HelloWorldSceneAR }}
       style={styles.f1}
     />
+  ) : (
+    <View style={{ flex: 1 }}>
+      <Login />
+    </View>
   );
-};
+}
 
-var styles = StyleSheet.create({
+export default function App() {
+  return (
+    <LanguageProvider>
+      <AuthProvider>
+        <Main />
+      </AuthProvider>
+    </LanguageProvider>
+  );
+}
+
+const styles = StyleSheet.create({
   f1: { flex: 1 },
   helloWorldTextStyle: {
     fontFamily: "Arial",

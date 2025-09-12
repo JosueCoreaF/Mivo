@@ -1,117 +1,160 @@
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { useAuth } from "../contexts/AuthContext";
-import { i18n, useLanguage } from "../contexts/LanguageContext";
 import CustomButton from "../components/CustomButton";
-import { translations } from "../translations/i18n";
 
-
-type Book = {
-    id: string;
-    title: string;
-    author: string;
-    genre: string;
-    image_url: string;
-};
-
-export default function Home() {
+export default function Home({ navigation }: any) {
     const { user } = useAuth();
-    const { changeLanguage, language } = useLanguage();
-
-    const books: Book[] = [
-        {
-            id: "100",
-            image_url: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.goodreads.com%2Fbook%2Fshow%2F56916837-to-kill-a-mockingbird&psig=AOvVaw036T-ORpQ8aIciiTaxfQ5k&ust=1756682770650000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCMDVkrbXs48DFQAAAAAdAAAAABAW",
-            title: "Cien años de soledad",
-            author: "Gabriel García Márquez",
-            genre: "Realismo mágico"
-        },
-        {
-            id: "200",
-
-            image_url: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1612238791i/56916837.jpg",
-            title: "To Kill a Mockingbird",
-            author: "Harper Lee",
-            genre: "Ficción clásica"
-        },
-        {
-            id: "300",
-
-            image_url: "https://example.com/images/the-pragmatic-programmer.jpg",
-            title: "The Pragmatic Programmer",
-            author: "Andrew Hunt y David Thomas",
-            genre: "Tecnología / Software"
-        },
-        {
-            id: "400",
-            image_url: "https://example.com/images/el-nombre-del-viento.jpg",
-            title: "El nombre del viento",
-            author: "Patrick Rothfuss",
-            genre: "Fantasía"
-        }
-    ];
-
-    const renderItem = ({ item }: { item: Book }) =>
-    (<TouchableOpacity style={styles.card}>
-// ...existing code...
-        <Image source={{ uri: item.image_url }} style={styles.image} />
-        <View style={styles.info}>
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.author}>{item.author}</Text>
-        </View>
-    </TouchableOpacity>)
-
 
     return (
-        <View>
-            <Text style={{ fontWeight: "bold", color: "black", fontSize: 18 }}>
-                Hola {user?.email}, {i18n.t('welcomeText')}</Text>
-            <Text>Tu idioma actual de traduccion: {language}</Text>
-
-            <View style={styles.translationsContainer}>
-                <CustomButton title={"FR"}
-                    onPress={() => changeLanguage("fr")}
-                    variant={'primary'} />
-                <CustomButton title={"EN"}
-                    onPress={() => changeLanguage("en")}
-                    variant={'primary'} />
-                <CustomButton title={"ES"}
-                    onPress={() => changeLanguage("es")}
-                    variant={'primary'} />
+        <ScrollView contentContainerStyle={styles.container}>
+            {/* Header */}
+            <View style={styles.header}>
+                <Image
+                    source={{ uri: "https://cdn-icons-png.flaticon.com/512/565/565547.png" }}
+                    style={styles.logo}
+                />
+                <Text style={styles.title}>Mivo AR</Text>
             </View>
 
-            <FlatList
-                data={books}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={renderItem}
-                contentContainerStyle={styles.list}
+            {/* Bienvenida */}
+            <Text style={styles.welcome}>¡Hola {user?.email || "Artista"}!</Text>
+            <Text style={styles.subtitle}>
+                Crea arte urbano y publicidad en el mundo real usando realidad aumentada.
+            </Text>
+
+            {/* Cards de funciones */}
+            <View style={styles.cardsContainer}>
+                <View style={styles.card}>
+                    <Image
+                        source={{ uri: "https://cdn-icons-png.flaticon.com/512/1828/1828884.png" }}
+                        style={styles.cardIcon}
+                    />
+                    <Text style={styles.cardTitle}>Crea tu arte</Text>
+                    <Text style={styles.cardDesc}>Diseña y deja tu huella en cualquier espacio urbano.</Text>
+                </View>
+                <View style={styles.card}>
+                    <Image
+                        source={{ uri: "https://cdn-icons-png.flaticon.com/512/854/854878.png" }}
+                        style={styles.cardIcon}
+                    />
+                    <Text style={styles.cardTitle}>Explora campañas</Text>
+                    <Text style={styles.cardDesc}>Descubre arte y publicidad AR cerca de ti.</Text>
+                </View>
+            </View>
+
+            {/* Botón para ir a la cámara AR */}
+            <CustomButton
+                title="Entrar a la cámara AR"
+                onPress={() => navigation && navigation.navigate ? navigation.navigate("ARCamera") : null}
+                variant="primary"
             />
-        </View>
+
+            {/* Inspiración */}
+            <Text style={styles.inspirationTitle}>Inspírate</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.inspirationScroll}>
+                <Image
+                    source={{ uri: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" }}
+                    style={styles.inspirationImg}
+                />
+                <Image
+                    source={{ uri: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" }}
+                    style={styles.inspirationImg}
+                />
+                <Image
+                    source={{ uri: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" }}
+                    style={styles.inspirationImg}
+                />
+            </ScrollView>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
-    translationsContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        height: 200,
+    container: {
+        alignItems: "center",
+        padding: 20,
+        backgroundColor: "#f5f6fa",
+        flexGrow: 1,
     },
-    list: {
-        paddingHorizontal: 16
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 10,
+    },
+    logo: {
+        width: 48,
+        height: 48,
+        marginRight: 10,
+    },
+    title: {
+        fontSize: 28,
+        fontWeight: "bold",
+        color: "#22223b",
+    },
+    welcome: {
+        fontSize: 20,
+        fontWeight: "600",
+        marginVertical: 8,
+        color: "#22223b",
+    },
+    subtitle: {
+        fontSize: 16,
+        color: "#4a4e69",
+        marginBottom: 18,
+        textAlign: "center",
+    },
+    cardsContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width: "100%",
+        marginBottom: 20,
     },
     card: {
-        flexDirection: 'row',
-        borderRadius: 8,
-        marginVertical: 8,
-        padding: 10,
-        backgroundColor: 'pink'
-
+        backgroundColor: "#fff",
+        borderRadius: 12,
+        padding: 16,
+        alignItems: "center",
+        width: 150,
+        marginHorizontal: 5,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
     },
-    info: { flexShrink: 1 },
-    title: { fontWeight: 'bold', fontSize: 16 },
-    author: { color: 'dark-grey' },
-    image: {
-        width: 80,
-        height: 120,
-    }
-})
+    cardIcon: {
+        width: 40,
+        height: 40,
+        marginBottom: 8,
+    },
+    cardTitle: {
+        fontWeight: "bold",
+        fontSize: 16,
+        color: "#22223b",
+        marginBottom: 4,
+    },
+    cardDesc: {
+        fontSize: 13,
+        color: "#4a4e69",
+        textAlign: "center",
+    },
+    inspirationTitle: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: "#22223b",
+        marginTop: 24,
+        marginBottom: 8,
+        alignSelf: "flex-start",
+    },
+    inspirationScroll: {
+        flexDirection: "row",
+        marginBottom: 20,
+    },
+    inspirationImg: {
+        width: 120,
+        height: 80,
+        borderRadius: 10,
+        marginRight: 10,
+    },
+});
